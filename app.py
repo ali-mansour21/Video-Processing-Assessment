@@ -1,11 +1,13 @@
 from pathlib import Path
 from celery import chain
 from fastapi import FastAPI,UploadFile,File, HTTPException
+from fastapi.staticfiles import StaticFiles
 from tasks import merge_task, watermark_task, thumbnail_task
 import uuid
 from settings import BASE_URL, VIDEOS_DIR
 app = FastAPI(title="Video Processing Service")
 
+app.mount("/videos", StaticFiles(directory=str(VIDEOS_DIR)), name="videos")
 LOGO_PATH = Path("logo.png").resolve()
 @app.get("/")
 def read_root():
