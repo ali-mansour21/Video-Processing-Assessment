@@ -29,10 +29,10 @@ def cleanup_videos():
                 except Exception as e:
                     print(f"Failed to remove {job_dir}: {e}")
             
-            if removed:
-                print(f"Removed old jobs: {', '.join(removed)}")
-            else:
-                print("No old jobs found.")
+    if removed:
+        print(f"Removed old jobs: {', '.join(removed)}")
+    else:
+        print("No old jobs found.")
 
 if __name__ == "__main__":
     cleanup_videos()
