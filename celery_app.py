@@ -5,6 +5,7 @@ celery_app = Celery(
     "video_service",
     broker=REDIS_URL,
     backend=REDIS_URL,
+    include=["tasks"],
 )
 
 celery_app.conf.update(
