@@ -1,0 +1,13 @@
+# API framework
+fastapi
+uvicorn[standard]
+
+# Background tasks & broker
+celery
+redis
+
+# File uploads
+python-multipart
+
+# Env var management
+python-dotenv

@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7
+    container_name: video_redis
+    ports:
+      - "6379:6379"
+
+  api:
+    build: .
+    container_name: video_api
+    command: uvicorn app:app --host 0.0.0.0 --port 5000 --reload
+    environment:
+      BASE_URL: "http://localhost:5000"
+      VIDEOS_DIR: "/app/videos"
+      REDIS_URL: "redis://redis:6379/0"
+    volumes:
+      - .:/app
+      - ./videos:/app/videos
+    ports:
+      - "5000:5000"
+    depends_on:
+      - redis
+
+  worker:
+    build: .
+    container_name: video_worker
+    command: celery -A celery_app.celery_app worker --loglevel=INFO
+    environment:
+      VIDEOS_DIR: "/app/videos"
+      REDIS_URL: "redis://redis:6379/0"
+    volumes:
+      - .:/app
+      - ./videos:/app/videos
+    depends_on:
+      - redis
