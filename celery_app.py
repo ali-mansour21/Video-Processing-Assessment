@@ -16,4 +16,8 @@ celery_app.conf.update(
     result_expires=3600,
     timezone="UTC",
     enable_utc=True,
+    task_acks_late=True,
+    task_reject_on_worker_lost=True,
+    task_time_limit=60*20,
+    task_soft_time_limit=60*15,
 )
