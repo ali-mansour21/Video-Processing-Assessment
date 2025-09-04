@@ -13,7 +13,7 @@ LOGO_PATH = Path("logo.png").resolve()
 def read_root():
     return {"message":"Hello World"}
 
-@app.post("/videos/merge")
+@app.post("/api/videos/merge")
 async def merge_vidoes(videos: list[UploadFile] = File(...)):
     if not (2<= len(videos) <= 5):
         raise HTTPException(status_code=400, detail="You Should Provide Between 2 and 5 Video Files.")
