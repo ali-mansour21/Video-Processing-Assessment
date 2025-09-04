@@ -45,9 +45,10 @@ def watermark_task(merged_path: str, logo_path: str, final_out: str) -> str:
     tmp = final_out.with_suffix(".tmp.mp4")
     _run(
         f'ffmpeg -y -hide_banner -loglevel error -i "{merged_path}" -i "{logo_path}" '
-        f'-filter_complex "overlay=main_w-overlay_w-10:main_h-overlay_h-10" '
+        f'-filter_complex "[1:v]scale=200:-1,format=rgba,colorchannelmixer=aa=0.35[wm];'
+        f'[0:v][wm]overlay=main_w-overlay_w-10:main_h-overlay_h-10:enable=\'between(t,0,3)\'" '
         f'-c:v libx264 -preset veryfast -crf 23 -c:a copy -movflags +faststart "{tmp}"'
-    )
+        )
     _atomic_replace(tmp, final_out)
     return str(final_out)
 
