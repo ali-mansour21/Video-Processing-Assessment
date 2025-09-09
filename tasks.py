@@ -15,7 +15,6 @@ def _atomic_replace(tmp:Path,final:Path):
     tmp.replace(final)
 
 @celery_app.task(
-        bind = True,
         acks_late=True, 
         autoretry_for=(RuntimeError, SoftTimeLimitExceeded),
         retry_kwargs={"max_retries": 2},
@@ -60,7 +59,6 @@ def merge_task(paths:list[str],merged_out:str)->str:
         raise
 
 @celery_app.task(
-        bind = True,
         acks_late=True, 
         autoretry_for=(RuntimeError, SoftTimeLimitExceeded),
         retry_kwargs={"max_retries": 2},
@@ -102,7 +100,6 @@ def _probe_duration(path: Path) -> float:
         return 0.0
 
 @celery_app.task(
-        bind = True,
         acks_late=True, 
         autoretry_for=(RuntimeError, SoftTimeLimitExceeded),
         retry_kwargs={"max_retries": 2},
@@ -110,7 +107,7 @@ def _probe_duration(path: Path) -> float:
         retry_backoff_max=300,
         retry_jitter=True
 )
-def thumbnail_task(final_video: str, thumb_out: str) -> str:
+def thumbnail_task( final_video: str, thumb_out: str) -> str:
     final_video = Path(final_video)
     thumb_out = Path(thumb_out)
     job_dir = thumb_out.parent
