@@ -24,7 +24,7 @@ def _atomic_replace(tmp:Path,final:Path):
 )
 def merge_task(paths:list[str],merged_out:str)->str:
     merged_out_path = Path(merged_out)
-    job_dir = merged_out.parent
+    job_dir = merged_out_path.parent
     tmp_dir = job_dir / "temp"
     tmp_dir.mkdir(parents=True,exist_ok=True)
 
@@ -45,7 +45,7 @@ def merge_task(paths:list[str],merged_out:str)->str:
         listfile = tmp_dir / "list.txt"
         listfile.write_text("".join([f"file '{p.as_posix()}'\n" for p in normalized]))
 
-        merged_tmp = merged_out.with_suffix(".tmp.mp4")
+        merged_tmp = merged_out_path.with_suffix(".tmp.mp4")
         out = _run(
             f'ffmpeg -y -hide_banner -loglevel error '
             f'-f concat -safe 0 -i "{listfile}" -c copy "{merged_tmp}"'
